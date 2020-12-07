@@ -6,6 +6,8 @@ use App\Http\Requests\StorePost;
 use App\Models\BlogPost;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;    // Foreign Key fix
+
 // use Illuminate\Support\Facades\DB; // seee Query Test below!
 
 class PostsController extends Controller
@@ -105,7 +107,9 @@ class PostsController extends Controller
         $post = new BlogPost();
         $post->title = $validated['title'];
         $post->content = $validated['content'];
-        // $post->user_id = Auth::user()->id;
+
+        $post->user_id = Auth::user()->id;
+
         $post->save();
         // OR:-
 
