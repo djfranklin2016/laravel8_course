@@ -13,7 +13,10 @@ class AuthServiceProvider extends ServiceProvider
      * @var array
      */
     protected $policies = [
+        
         // 'App\Models\Model' => 'App\Policies\ModelPolicy',
+
+        'App\Models\BlogPost' => 'App\Policies\BlogPostPolicy'
     ];
 
     /**
@@ -25,6 +28,36 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        //
+        // Gate::define('update-post', function($user, $post) {
+        //     return $user->id == $post->user_id;
+        // });
+
+        // Gate::define('delete-post', function($user, $post) {
+        //     return $user->id == $post->user_id;
+        // });  // SEE BELOW:-
+
+        // Gate::define('posts.update', 'App\Policies\BlogPostPolicy@update');
+        // Gate::define('posts.delete', 'App\Policies\BlogPostPolicy@delete');
+
+
+        // te 'resource' is now registered ABOVE as an entire class!
+        // Gate::resource('posts', 'App\Policies\BlogPostPolicy');
+        // gives posts.create, posts.view, posts.update, posts.delete automatically
+
+        // Gate::before(function ($user, $ability) {       // this will ALWAYS run BEFORE any other Gate
+        //     if ($user->is_admin && in_array($ability, ['posts.update'])) {   // with the ability to Override a standrad Gate
+
+        //     // if ($user->is_admin && in_array($ability, ['update-post', 'delete-post'])) {     // with the ability to Override a standrad Gate
+        //     return true;                                // so here will aways return True (ie Admin Override)
+        //     }                                           // and standard Gate will not even run
+        // });
+
+        // Gate::after() is immediatelt After standard Gate heck and accepts the $reult of the gate check
+        // and allows an opportunity to override the result - same as Gate::before but executed After Gate check
+        // Gate::after(function($user, $ability, $result) {
+        //     if($user->is_admin) {
+        //         return true;
+        //     }
+        // });
     }
 }

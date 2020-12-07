@@ -6,19 +6,27 @@
 
     <h1>{{ $post->title }}</h1>
     <p>{{ $post->content }}</p>
-    <p>Added {{ $post->created_at->diffForHumans() }}</p>
+    <p class="text-muted">
+        Added {{ $post->created_at->diffForHumans() }}
+        by {{ $post->user->name }}
+    </p>
     <hr>
 
 @if(now()->diffInMinutes($post->created_at) < 5)
 <div class="alert alert-info">New!</div>
 @endif
 
-<h3>Posts.Show User Name = {{ Auth::user()->name }} !</h3>
-<h3>Posts.Show User id = {{ Auth::user()->id }} !</h3>
+<p>Logged In User: {{ Auth::user()->name }} - Id {{ Auth::user()->id}} </p>
+{{-- <h3>Logged In ID: {{ Auth::user()->id }} </h3> --}}
 
-<h3>Posts.Show Post User ID = {{ $post->user_id }} !</h3>
+<p>This Post's Post_Id : {{ $post->id }} </p>
 
-<h4>Comments:</h4>
+<p>This Post's User_Id : {{ $post->user_id }} </p>
+
+<p>Posted by User: {{ $post->user->name }} - Id {{ $post->user->id}} </p>
+{{-- <h5>Posted by ID: {{ $post->user->name }} </h5> --}}
+<hr>
+<h4>Comments: {{ $post->comments_count }}</h4>
 
 @forelse($post->comments as $comment)
 

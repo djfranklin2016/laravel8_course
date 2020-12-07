@@ -1,8 +1,9 @@
 <h3><a href="{{ route('posts.show', ['post' => $post->id]) }}">{{ $post->title }}</a></h3>
 <p>Content: {{ $post->content }} </p>
-<p>
+<p class="text-muted">
     Added {{ $post->created_at->diffForHumans() }}
-    {{-- by {{ $post->user->name }} --}}
+    {{-- by {{ $post->user->name }} (Id: {{ $post->user->id }}) --}}
+    by {{ $post->user->name }}
 
 </p>
 

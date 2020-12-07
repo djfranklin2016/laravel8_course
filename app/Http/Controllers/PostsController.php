@@ -7,15 +7,34 @@ use App\Models\BlogPost;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;    // Foreign Key fix
+use Illuminate\Support\Facades\Gate;    // ref AuhServiceProvider - Gate definitions
 
 // use Illuminate\Support\Facades\DB; // seee Query Test below!
+
+// if Controllers and Policies are created using "resource" command then Laravel will be really clever
+// and associate the following Controller functions to their related Authorisations in the class's
+// Authoisation Policy (controller function PostsController => authorisations policy BlogPostPolicy)
+// [
+//     'show' => 'view',
+//     'create' => 'create',
+//     'store' => 'create',
+//     'edit' => 'update',
+//     'update' => 'update',
+//     'destroy' => 'delete'
+// ]
 
 class PostsController extends Controller
 {
     public function __construct()
     {
+        // $this->middleware('auth')
+        //     ->only(['create', 'store', 'edit', 'update', 'destroy', 'show']);
+
         $this->middleware('auth')
-            ->only(['create', 'store', 'edit', 'update', 'destroy']);
+            ->only(['create', 'store', 'edit', 'update', 'destroy']);   // ie Allow Show Individual Blog Posts
+
+        // $this->middleware('auth');  // Protect ALL class actions
+
     }
 
     // private $posts = [
@@ -76,10 +95,7 @@ class PostsController extends Controller
         // return view('posts.index', ['posts' => BlogPost::orderBy('created_at', 'desc')->take(5)->get()]);
 
         // posts index with comments_count values
-        return view(
-            'posts.index',
-            ['posts' => BlogPost::withCount('comments')->get()]
-        );
+        return view('posts.index', ['posts' => BlogPost::withCount('comments')->get()]);
     }
 
     /**
@@ -89,6 +105,8 @@ class PostsController extends Controller
      */
     public function create()
     {
+        // $this->authorize('posts.create');   // see notes in BlogPostPolicy create function
+        
         return view('posts.create');
     }
 
@@ -108,7 +126,7 @@ class PostsController extends Controller
         $post->title = $validated['title'];
         $post->content = $validated['content'];
 
-        $post->user_id = Auth::user()->id;
+        $post->user_id = Auth::user()->id;      // Foreign Key fix
 
         $post->save();
         // OR:-
@@ -152,7 +170,22 @@ class PostsController extends Controller
      */
     public function edit($id)
     {
-        return view('posts.edit', ['post' => BlogPost::findOrFail($id)]);
+        $post = BlogPost::findOrFail($id);
+
+        // if (Gate::denies('update-post', $post)) {        // ref AuhServiceProvider - Gate definitions
+        //     abort(403, "You can't edit this post!");
+        // }; // OR :-
+
+        // $this->authorize('posts.update', $post);     // sorter code than the above Gate::
+        // Now used as - below - see AuthServiceProvider protected $policies which registers a Class to it's Policy
+        
+        // $this->authorize('update', $post);     // sorter code than the above Gate::
+
+        $this->authorize($post);     // will automtically lookup BlogPostPolicy 'update' policy - see Top Notes
+
+        return view('posts.edit', ['post' => $post]);
+
+        // return view('posts.edit', ['post' => BlogPost::findOrFail($id)]);
     }
 
     /**
@@ -165,6 +198,15 @@ class PostsController extends Controller
     public function update(StorePost $request, $id)
     {
         $post = BlogPost::findOrFail($id);
+
+        // if (Gate::denies('update-post', $post)) {        // ref AuhServiceProvider - Gate definitions
+        //     abort(403, "You can't edit this post!");
+        // };   // OR:-
+
+        // $this->authorize('update', $post);
+
+        $this->authorize($post);    // will automtically lookup BlogPostPolicy 'update' policy - see Top Notes
+
         $validated = $request->validated();
         $post->fill($validated);
         $post->save();
@@ -185,6 +227,14 @@ class PostsController extends Controller
         // dd($id);
         
         $post = BlogPost::findOrFail($id);
+        
+        // if (Gate::denies('delete-post', $post)) {        // ref AuhServiceProvider - Gate definitions
+        //     abort(403, "You can't delete this post!");
+        // };   // OR:-
+
+        // $this->authorize('delete', $post);
+        
+        $this->authorize($post);    // will automtically lookup BlogPostPolicy 'delete' policy - see Top Notes
 
         $post->delete();
 
