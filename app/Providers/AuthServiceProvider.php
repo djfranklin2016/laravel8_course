@@ -12,7 +12,7 @@ class AuthServiceProvider extends ServiceProvider
      *
      * @var array
      */
-    protected $policies = [
+    protected $policies = [         // BEST used for Resources, Controllers and Models
         
         // 'App\Models\Model' => 'App\Policies\ModelPolicy',
 
@@ -24,9 +24,13 @@ class AuthServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function boot()
+    public function boot()      // Best used for indiviaul items not covered by the above
     {
         $this->registerPolicies();
+
+        Gate::define('home.secret', function($user) {
+            return $user->is_admin;
+        });
 
         // Gate::define('update-post', function($user, $post) {
         //     return $user->id == $post->user_id;
@@ -44,13 +48,13 @@ class AuthServiceProvider extends ServiceProvider
         // Gate::resource('posts', 'App\Policies\BlogPostPolicy');
         // gives posts.create, posts.view, posts.update, posts.delete automatically
 
-        // Gate::before(function ($user, $ability) {       // this will ALWAYS run BEFORE any other Gate
-        //     if ($user->is_admin && in_array($ability, ['posts.update'])) {   // with the ability to Override a standrad Gate
+        Gate::before(function ($user, $ability) {       // this will ALWAYS run BEFORE any other Gate
+            if ($user->is_admin && in_array($ability, ['update'])) {   // with the ability to Override a standrad Gate
 
         //     // if ($user->is_admin && in_array($ability, ['update-post', 'delete-post'])) {     // with the ability to Override a standrad Gate
-        //     return true;                                // so here will aways return True (ie Admin Override)
-        //     }                                           // and standard Gate will not even run
-        // });
+            return true;                                // so here will aways return True (ie Admin Override)
+            }                                           // and standard Gate will not even run
+        });
 
         // Gate::after() is immediatelt After standard Gate heck and accepts the $reult of the gate check
         // and allows an opportunity to override the result - same as Gate::before but executed After Gate check

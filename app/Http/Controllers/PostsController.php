@@ -120,16 +120,17 @@ class PostsController extends Controller
     {
         // dd($request);
         
-        $validated = $request->validated();
+        // $validated = $request->validated();
 
-        $post = new BlogPost();
-        $post->title = $validated['title'];
-        $post->content = $validated['content'];
+        // $post = new BlogPost();
+        // $post->title = $validated['title'];
+        // $post->content = $validated['content'];
 
-        $post->user_id = Auth::user()->id;      // Foreign Key fix
+        // $post->user_id = Auth::user()->id;      // Foreign Key fix
 
-        $post->save();
+        // $post->save();
         // OR:-
+
 
         // $post['user_id'] = Auth::user()->id;
         // die(echo "$post->user_id" );
@@ -140,9 +141,15 @@ class PostsController extends Controller
 
         // $post = BlogPost::create($validated);
         
+        $validated = $request->validated();
+
+        $validated['user_id'] = $request->user()->id;
+
+        $blogPost = BlogPost::create($validated);
+
         $request->session()->flash('status', 'The Blog Post was Created!');
 
-        return redirect()->route('posts.show', ['post' => $post->id]);
+        return redirect()->route('posts.show', ['post' => $blogPost->id]);
     }
 
     /**

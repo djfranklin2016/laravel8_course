@@ -30,6 +30,10 @@ Route::get('/', [HomeController::class, 'home'])
 
 Route::get('/contact', [HomeController::class, 'contact'])->name('home.contact');
 
+Route::get('/secret', [HomeController::class, 'secret'])
+    ->name('secret')
+    ->middleware('can:home.secret');        // only Admins can access home/secret page
+
 // CREATE ROUTES FOR ALL POSTCONTROLLERS IN A SINGLE LINE
 // NB DON'T FORGET TO ADD CLASS AT TOP OF THIS PAGE !!!
 

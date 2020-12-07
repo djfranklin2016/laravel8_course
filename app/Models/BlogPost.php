@@ -13,13 +13,13 @@ class BlogPost extends Model
     use SoftDeletes;        // when adding SoftDeletes to table structure
 
 
-    protected $guarded=[];
+    // protected $guarded=[];
 
-    // protected $fillable = [
-    //     'title',            // DB Table blog_posts column headings
-    //     'content',
-    //     'user_id'
-    // ];
+    protected $fillable = [
+        'title',            // DB Table blog_posts column headings
+        'content',
+        'user_id'
+    ];
 
     public function comments()
     {
