@@ -49,7 +49,7 @@ class AuthServiceProvider extends ServiceProvider
         // gives posts.create, posts.view, posts.update, posts.delete automatically
 
         Gate::before(function ($user, $ability) {       // this will ALWAYS run BEFORE any other Gate
-            if ($user->is_admin && in_array($ability, ['update'])) {   // with the ability to Override a standrad Gate
+            if ($user->is_admin && in_array($ability, ['update', 'delete'])) {   // with the ability to Override a standrad Gate
 
         //     // if ($user->is_admin && in_array($ability, ['update-post', 'delete-post'])) {     // with the ability to Override a standrad Gate
             return true;                                // so here will aways return True (ie Admin Override)

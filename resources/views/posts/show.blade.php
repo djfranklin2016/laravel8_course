@@ -3,20 +3,42 @@
 @section('title', $post->title)
 
 @section('content')
+    <h1>
+        {{ $post->title }}
+        {{-- @if(now()->diffInMinutes($post->created_at) < 3600)
+            <x-badge type="primary">
+                Brand New Post!
+            </x-badge>
+        @endif --}}
+        <x-badge show="{{ now()->diffInMinutes($post->created_at) < 3600 }}">
+            Brand New Post !
+        </x-badge>
+    </h1>
 
-    <h1>{{ $post->title }}</h1>
     <p>{{ $post->content }}</p>
-    <p class="text-muted">
+
+    {{-- <p class="text-muted">
         Added {{ $post->created_at->diffForHumans() }}
         by {{ $post->user->name }}
-    </p>
+    </p> --}}
+
+    <x-updated date="{{ $post->created_at->diffForHumans() }}" name="{{ $post->user->name}}">
+    
+    </x-updated>
+
+
+    {{-- <p>Last updated {{ $post->updated_at->diffForHumans() }} </p> --}}
+    
+    <x-updated date="{{ $post->updated_at->diffForHumans() }}">
+        Updated
+    </x-updated>
+
+    <p>Currently being read by {{ $counter }} people.</p>
     <hr>
 
-@if(now()->diffInMinutes($post->created_at) < 5)
-<div class="alert alert-info">New!</div>
-@endif
 
-<p>Logged In User: {{ Auth::user()->name }} - Id {{ Auth::user()->id}} </p>
+
+{{-- <p>Logged In User: {{ Auth::user()->name }} - Id {{ Auth::user()->id}} </p> --}}
 {{-- <h3>Logged In ID: {{ Auth::user()->id }} </h3> --}}
 
 <p>This Post's Post_Id : {{ $post->id }} </p>
@@ -33,9 +55,15 @@
     <p>
         <strong>{{ $comment->content }}</strong>
     </p>
-    <p class="text-muted">
+    {{-- <p class="text-muted">
         Added {{ $comment->created_at->diffForHumans() }}
-    </p>
+        by {{ $post->user->name }}
+    </p> --}}
+
+    <x-updated date="{{ $comment->created_at->diffForHumans() }}">
+    
+    </x-updated>
+    
     <hr>
 @empty
     <p class="text-muted">No Comments Yet!</p>
