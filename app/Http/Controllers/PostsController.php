@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StorePost;
 use App\Models\BlogPost;
 use App\Models\User;
+use App\Models\Tag;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;    // Foreign Key fix
 use Illuminate\Support\Facades\Cache;
@@ -99,24 +100,25 @@ class PostsController extends Controller
         // return view('posts.index', ['posts' => BlogPost::withCount('comments')->orderBy('created_at', 'desc')->get()]);
 
         // CACHE
-        $mostCommented = Cache::tags(['blog-post'])->remember('blog-post-most-commented', now()->addSeconds(10), function () {
-            return BlogPost::mostCommented()->take(5)->get();
-        });
+        // $mostCommented = Cache::tags(['blog-post'])->remember('blog-post-most-commented', now()->addSeconds(10), function () {
+        //     return BlogPost::mostCommented()->take(5)->get();
+        // });             // now part of ViewComposer - Activity Composer
 
-        $mostActive = Cache::remember('users-most-active', 60, function () {
-            return User::withMostBlogPosts()->take(5)->get();
-        });
+        // $mostActive = Cache::remember('users-most-active', 60, function () {
+        //     return User::withMostBlogPosts()->take(5)->get();
+        // });            // now part of ViewComposer - Activity Composer
 
-        $mostActiveLastMonth = Cache::remember('users-most-active-last-month', 60, function () {
-            return User::withMostBlogPostsLastMonth()->take(5)->get();
-        });
+        // $mostActiveLastMonth = Cache::remember('users-most-active-last-month', 60, function () {
+        //     return User::withMostBlogPostsLastMonth()->take(5)->get();
+        // });            // now part of ViewComposer - Activity Composer
 
 
         return view('posts.index', [
-            'posts' => BlogPost::latest()->withCount('comments')->with('user')->get(),
-            'mostCommented' => $mostCommented,
-            'mostActive' => $mostActive,
-            'mostActiveLastMonth' => $mostActiveLastMonth,
+            'posts' => BlogPost::latest()->withCount('comments')->with('user')->with('tags')->get(),
+            // 'mostCommented' => $mostCommented,
+            // 'mostActive' => $mostActive,
+            // 'mostActiveLastMonth' => $mostActiveLastMonth,
+            // now part of ViewComposer - Activity Composer
             ]     // now with LOCAL SCOPE Latest() & MostCommented()- see BlogPost Model
         );
             // ->orderBy('created_at', 'desc') is now in LatestScope as default behaviou for BlogPosts
@@ -201,7 +203,7 @@ class PostsController extends Controller
         // Above "latest()" now part of the relationship definition in BlogPost model
         
         $blogPost = Cache::tags(['blog-post'])->remember("blog-post-{$id}", 60, function () use($id) {
-            return BlogPost::with('comments')->findOrFail($id);
+            return BlogPost::with('comments')->with('tags')->with('user')->findOrFail($id);
         });
 
 

@@ -16,9 +16,21 @@ class Comment extends Model
 
     // NB Make function name = DB table field name ie blogPost => blog_post
     // Laravel deaults to 'id' on indexes so thus will look for blog_post_id
+
+    protected $guarded=[];
+
+    // protected $fillable = [
+    //     'user_id'
+    // ];
+
     public function blogPost()
     {
         return $this->belongsTo('App\Models\BlogPost');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo('App\Models\User');
     }
 
     public function scopeLatest(Builder $query)

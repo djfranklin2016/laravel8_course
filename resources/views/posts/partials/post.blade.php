@@ -27,7 +27,9 @@
     
 </x-updated>
 
+<x-tags :tags="$post->tags">
 
+</x-tags>
 
 @if($post->comments_count)
     <p class="text-muted">{{ $post->comments_count}} comments</p>

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\PostTagController;
 use App\Http\Controllers\PostsController;
 use App\Http\Controllers\AboutController;
 use App\Http\Controllers\HomeController;
@@ -39,5 +40,7 @@ Route::get('/secret', [HomeController::class, 'secret'])
 
 Route::resource('posts', PostsController::class);
 
-Auth::routes();     // registers ALL Auth routtes
+Route::get('/posts/tag/{tag}', [PostTagController::class, 'index'])->name('posts.tags.index');
+
+Auth::routes();     // registers ALL Auth routes
 

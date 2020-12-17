@@ -36,6 +36,11 @@ class BlogPost extends Model
         return $this->belongsTo('App\Models\User');
     }
 
+    public function tags()
+    {
+        return $this->belongsToMany('App\Models\Tag')->withTimestamps();  // Many-to-Many relationshp definition
+    }
+
     // local scope Latest()
     public function scopeLatest(Builder $query)     // LOCAL SCOPE created in the BlogPost Model
     {
