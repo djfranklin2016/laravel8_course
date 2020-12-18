@@ -12,7 +12,7 @@
                     Brand New Post!
                 </x-badge>
             @endif --}}
-            <x-badge show="{{ now()->diffInMinutes($post->created_at) < 3600 }}">
+            <x-badge show="{{ now()->diffInMinutes($post->created_at) < 240 }}">
                 Brand New Post !
             </x-badge>
         </h1>
@@ -57,6 +57,8 @@
         <hr>
         <h4>Comments: {{ $post->comments_count }}</h4>
 
+        @include('comments.partials.form')
+
         @forelse($post->comments as $comment)
 
             <p>
@@ -67,7 +69,7 @@
                 by {{ $post->user->name }}
             </p> --}}
 
-            <x-updated date="{{ $comment->created_at->diffForHumans() }}">
+            <x-updated date="{{ $comment->created_at->diffForHumans() }}" name="{{ $comment->user->name}}">
             
             </x-updated>
             

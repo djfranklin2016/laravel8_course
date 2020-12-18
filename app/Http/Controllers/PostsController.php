@@ -114,7 +114,10 @@ class PostsController extends Controller
 
 
         return view('posts.index', [
-            'posts' => BlogPost::latest()->withCount('comments')->with('user')->with('tags')->get(),
+            // 'posts' => BlogPost::latest()->withCount('comments')->with('user')->with('tags')->get(),
+
+            'posts' => BlogPost::LatestWithRelations()->get(),
+            
             // 'mostCommented' => $mostCommented,
             // 'mostActive' => $mostActive,
             // 'mostActiveLastMonth' => $mostActiveLastMonth,
@@ -202,8 +205,16 @@ class PostsController extends Controller
 
         // Above "latest()" now part of the relationship definition in BlogPost model
         
+        // $blogPost = Cache::tags(['blog-post'])->remember("blog-post-{$id}", 60, function () use($id) {
+        //     return BlogPost::with('comments')
+        //         ->with('tags')
+        //         ->with('user')
+        //         ->with('comments.user')    // nested relationship - get user info relating to each comment
+        //         ->findOrFail($id);
+        
         $blogPost = Cache::tags(['blog-post'])->remember("blog-post-{$id}", 60, function () use($id) {
-            return BlogPost::with('comments')->with('tags')->with('user')->findOrFail($id);
+            return BlogPost::with('comments', 'tags', 'user', 'comments.user')
+                ->findOrFail($id);
         });
 
 

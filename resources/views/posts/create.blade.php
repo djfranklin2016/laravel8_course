@@ -38,8 +38,8 @@
 
     @include('posts.partials.form')
 
-    <h3>User Name = {{ Auth::user()->name }}</h3>
-    <h3>User id = {{ Auth::user()->id }}</h3>
+    <h5>User Name = {{ Auth::user()->name }}</h5>
+    <h5>User id = {{ Auth::user()->id }}</h5>
 
     <div>
         <input class="btn btn-primary btn-block" type="submit" value="Create Post">

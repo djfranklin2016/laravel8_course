@@ -2,17 +2,17 @@
     <label for="title">Post Title</label>
     <input id="title" class="form-control" type="text" name="title" value="{{ old('title', optional($post ?? null)->title) }}">
 </div>
-@error('title')
+{{-- @error('title')
     <div class="alert alert-danger">{{ $message }}</div>
-@enderror
+@enderror --}}
 
 <div class="form-group">
     <label for="content">Post Content</label>
     <textarea class="form-control" id="content" name="content">{{ old('content', optional($post ?? null)->content) }}</textarea>
 </div>
 
-
-@if($errors->any())
+{{-- MOVED to Errors Component and Registered with AppServiceProvider --}}
+{{-- @if($errors->any())
     <div class="mb-3">
         <ul class="list-group">
             @foreach($errors->all() as $error)
@@ -20,5 +20,9 @@
             @endforeach
         </ul>
     </div>
-@endif
+@endif --}}
 
+{{-- @errors        // Not Laravel 8 syntax !
+@enderrors --}}
+
+<x-errors></x-errors>

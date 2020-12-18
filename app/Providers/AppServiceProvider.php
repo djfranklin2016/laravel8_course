@@ -29,6 +29,7 @@ class AppServiceProvider extends ServiceProvider
         Blade::component('components.updated', 'updated');
         Blade::component('components.card', 'card');
         Blade::component('components.tags', 'tags');
+        Blade::component('components.errors', 'errors');
 
         // view()->composer('*', ActivityComposer::class);  // to make data from ActivityComposer available to EVERY VIEW
 

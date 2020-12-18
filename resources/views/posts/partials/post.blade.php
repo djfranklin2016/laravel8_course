@@ -9,6 +9,10 @@
     @if($post->trashed())   {{-- IF post was deleted (soft) then close "strike-through" marker on title text --}}
         <del>
     @endif
+
+    <x-badge show="{{ now()->diffInMinutes($post->created_at) < 240 }}">
+        Brand New Post !
+    </x-badge>
 </h3>
 
 <p>Content: {{ $post->content }} </p>
@@ -32,9 +36,9 @@
 </x-tags>
 
 @if($post->comments_count)
-    <p class="text-muted">{{ $post->comments_count}} comments</p>
+    <p class="text-muted">{{ $post->comments_count }} comments</p>
 @else
-    <p class="text-muted">No Comments Yet!</p>
+    <p class="text-muted">No Comments Yet! ok</p>
 @endif
 
 <div class="mb-3">
