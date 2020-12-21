@@ -41,6 +41,10 @@ class BlogPost extends Model
         return $this->belongsToMany('App\Models\Tag')->withTimestamps();  // Many-to-Many relationshp definition
     }
 
+    public function image()
+    {
+        return $this->hasOne('App\Models\Image');
+    }
     // local scope Latest()
     public function scopeLatest(Builder $query)     // LOCAL SCOPE created in the BlogPost Model
     {

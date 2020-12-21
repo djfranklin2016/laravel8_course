@@ -25,7 +25,8 @@ class StorePost extends FormRequest
     {
         return [
             'title' => 'bail|required|min:5|max:100',
-            'content' => 'required|min:10'
+            'content' => 'required|min:10',
+            'thumbnail' => 'image|mimes:jpg,jpeg,png,gif,svg|max:4096|dimensions:min_height=500',     // 1Mb = 1024 bytes, so 4096 bytes = 4Mb
         ];
     }
 }

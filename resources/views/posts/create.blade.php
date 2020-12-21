@@ -4,7 +4,7 @@
 
 @section('content')
 
-<form action="{{ route('posts.store') }}" method="POST">
+<form action="{{ route('posts.store') }}" method="POST" enctype="multipart/form-data">
 
     @csrf     <!-- Cross Site Request Forgery protection - add to EVERY FORM! -->
 
@@ -38,8 +38,7 @@
 
     @include('posts.partials.form')
 
-    <h5>User Name = {{ Auth::user()->name }}</h5>
-    <h5>User id = {{ Auth::user()->id }}</h5>
+    <p>User Name = {{ Auth::user()->name }} (Id = {{ Auth::user()->id }})</p>
 
     <div>
         <input class="btn btn-primary btn-block" type="submit" value="Create Post">

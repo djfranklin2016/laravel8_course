@@ -25,4 +25,10 @@
 {{-- @errors        // Not Laravel 8 syntax !
 @enderrors --}}
 
+<div class="form-group">
+    <label for="thumbnail">Thumbnail</label>
+    <input type="file" name="thumbnail" class="form-control-file" id="thumbnail">
+</div>
+
+
 <x-errors></x-errors>

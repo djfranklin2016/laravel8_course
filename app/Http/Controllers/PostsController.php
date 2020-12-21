@@ -4,12 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StorePost;
 use App\Models\BlogPost;
+use App\Models\Image;
 use App\Models\User;
 use App\Models\Tag;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;    // Foreign Key fix
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Gate;    // ref AuhServiceProvider - Gate definitions
+use Illuminate\Support\Facades\Storage;
 
 // use Illuminate\Support\Facades\DB; // seee Query Test below!
 
@@ -174,7 +176,44 @@ class PostsController extends Controller
 
         $validated['user_id'] = $request->user()->id;
 
-        $blogPost = BlogPost::create($validated);
+        $blogPost = BlogPost::create($validated);       // create a validated Blog Post
+
+        if ($request->hasFile('thumbnail')) {
+            
+            $path = $request->file('thumbnail')->store('thumbnails');
+
+            // dd($path);
+
+            $blogPost->image()->save(
+                Image::create(['path' => $path])
+            );
+
+            // dd(Storage::url($path));
+
+        // store() saves the image into the thumbnails dorectory on the "default" disk. It alsoreturns the full path name of the image - so $path can then be stored via Image model into Images Table for future retrieval!
+
+        // $hasFile = ($request->hasFile('thumbnail'));
+        // dump($hasFile);
+
+        // if ($hasFile) {
+            
+        //     $file = $request->file('thumbnail');
+        //     dump($file);
+        //     dump($file->getClientMimeType());
+        //     dump($file->getClientOriginalExtension());
+
+        //     dump($file->store('thumbnails'));
+        //     dump(Storage::disk('public')->put('thumbnails', $file));
+
+        //     $name1 = dump($file->storeAs('thumbnails', $blogPost->id . '.' . $file->guessClientExtension()));
+        //     $name2 = dump(Storage::putFileAs('thumbnails', $file, $blogPost->user_id . '-' . $blogPost->user->name . '-blogPost-' . $blogPost->id . '.' . $file->guessClientExtension()));
+
+        //     dump(Storage::url($name1));
+        //     dump(Storage::url($name2));
+
+
+        }
+        // die;
 
         $request->session()->flash('status', 'The Blog Post was Created!');
 
@@ -305,12 +344,29 @@ class PostsController extends Controller
         $this->authorize($post);    // will automtically lookup BlogPostPolicy 'update' policy - see Top Notes
 
         $validated = $request->validated();
+
         $post->fill($validated);
-        $post->save();
+
+        if ($request->hasFile('thumbnail')) {   // if form request has an image in it
+            $path = $request->file('thumbnail')->store('thumbnails');   // get image url
+            
+            if ($post->image) {     // if post has an existing image
+                Storage::delete($post->image->path);    // delete existing image
+                $post->image->path = $path;             // grab new image url
+                $post->image->save();                   // save new replacement image
+            } else {                                    // otherwise save post's very first image
+                $post->image()->save(
+                    Image::create(['path' => $path])
+                );
+            }
+        }
+        
+        $post->save();      // save post
 
         $request->session()->flash('status', 'The Blog Post was Updated!');
 
         return redirect()->route('posts.show', ['post' => $post->id]);
+
     }
 
     /**
