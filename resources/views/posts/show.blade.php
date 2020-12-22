@@ -76,26 +76,16 @@
         <hr>
         <h4>Comments: {{ $post->comments_count }}</h4>
 
-        @include('comments.partials.form')
+        {{-- @include('comments.partials.form') --}}
 
-        @forelse($post->comments as $comment)
+        {{-- comment-form component --}}
+        <x-commentForm route="{{ route('posts.comments.store', ['post' => $post->id]) }}">
+        </x-commentForm>
 
-            <p>
-                <strong>{{ $comment->content }}</strong>
-            </p>
-            {{-- <p class="text-muted">
-                Added {{ $comment->created_at->diffForHumans() }}
-                by {{ $post->user->name }}
-            </p> --}}
+        {{-- <x-commentList comments="{{ $post->comments }}"> --}}
+        <x-commentList :comments="$post->comments">
+        </x-commentList>
 
-            <x-updated date="{{ $comment->created_at->diffForHumans() }}" name="{{ $comment->user->name}}">
-            
-            </x-updated>
-            
-            <hr>
-        @empty
-            <p class="text-muted">No Comments Yet!</p>
-        @endforelse
     </div>
     <div class="col-4">
 

@@ -10,11 +10,17 @@ class Image extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['path', 'blog_post_id'];
+    // protected $fillable = ['path', 'blog_post_id'];
+    protected $fillable = ['path'];
 
-    public function blogPost()
+    // public function blogPost()
+    // {
+    //     return $this->belongsTo('App\Models\BlogPost');
+    // }
+
+    public function imageable()     // morph images to either User profile pic or BlogPost pic - see each Model
     {
-        return $this->belongsTo('App\Models\BlogPost');
+        return $this->morphTo();
     }
 
     public function url()

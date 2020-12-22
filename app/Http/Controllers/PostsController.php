@@ -185,7 +185,8 @@ class PostsController extends Controller
             // dd($path);
 
             $blogPost->image()->save(
-                Image::create(['path' => $path])
+                // Image::create(['path' => $path])
+                Image::make(['path' => $path])      // changed create to make to accomodate imageable fileds
             );
 
             // dd(Storage::url($path));
@@ -356,7 +357,8 @@ class PostsController extends Controller
                 $post->image->save();                   // save new replacement image
             } else {                                    // otherwise save post's very first image
                 $post->image()->save(
-                    Image::create(['path' => $path])
+                    // Image::create(['path' => $path]) // removed - affects imageable by create/save instantly
+                    Image::make(['path' => $path])      // make = auto add in imageable fields then Save()
                 );
             }
         }

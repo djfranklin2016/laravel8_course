@@ -28,7 +28,8 @@ class BlogPost extends Model
     public function comments()
     {
         // return $this->hasMany('App\Models\Comment');
-        return $this->hasMany('App\Models\Comment')->latest();  // use local scope Latest for this entire relationship
+        // return $this->hasMany('App\Models\Comment')->latest();  // use local scope Latest for this entire relationship
+        return $this->morphMany('App\Models\Comment', 'commentable')->latest();  // Polymorphic many-many
     }
 
     public function user()
@@ -41,10 +42,17 @@ class BlogPost extends Model
         return $this->belongsToMany('App\Models\Tag')->withTimestamps();  // Many-to-Many relationshp definition
     }
 
-    public function image()
+    // public function image()      // replace by Imageable - see below
+    // {
+    //     return $this->hasOne('App\Models\Image');
+    // }
+
+    public function image()     // sets up imageable images for user Blog Post Pic
     {
-        return $this->hasOne('App\Models\Image');
+        return $this->morphOne('App\Models\Image', 'imageable');
     }
+
+
     // local scope Latest()
     public function scopeLatest(Builder $query)     // LOCAL SCOPE created in the BlogPost Model
     {

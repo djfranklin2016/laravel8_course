@@ -3,23 +3,20 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreComment;
-use App\Mail\CommentPosted;
-use App\Models\BlogPost;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 
-class PostCommentController extends Controller
+class UserCommentController extends Controller
 {
-
     public function __construct()
     {
         $this->middleware('auth')->only(['store']); // makes sure user is authorised to Store a Comment
     }
 
-    public function store(BlogPost $post, StoreComment $request)
+    public function store(User $user, StoreComment $request)
     {
-        // Comment::create()
-        $post->comments()->create([
+        $user->commentsOn()->create([
             'content' => $request->input('content'),
             'user_id' => $request->user()->id
         ]);
@@ -27,9 +24,6 @@ class PostCommentController extends Controller
         // Mail::to($post->user)->send(
         //     new CommentPosted($comment)
         // );
-
-        // $request->session()->flash('status', 'Comment added');
-        // return redirect()->back();
 
         return redirect()->back()
             ->withStatus('Comment added');

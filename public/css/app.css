@@ -10904,6 +10904,11 @@ a.text-dark:focus {
 }
 
 .badge-lg {
-  font-size: 1rem;
+  font-size: 0.8rem;
+}
+
+.avatar {
+  width: 128px;
+  height: 128px;
 }
 

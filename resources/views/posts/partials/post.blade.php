@@ -27,7 +27,7 @@
     Brand New Post !
 </x-badge> --}}
 
-<x-updated date="{{ $post->created_at->diffForHumans() }}" name="{{ $post->user->name}}">
+<x-updated date="{{ $post->created_at->diffForHumans() }}" name="{{ $post->user->name}}" userId="{{ $post->user->id }}">
     
 </x-updated>
 

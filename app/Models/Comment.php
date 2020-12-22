@@ -22,9 +22,14 @@ class Comment extends Model
 
     protected $fillable = ['user_id', 'content'];   // so these fields can be mass-assignable - see PostCommentController
 
-    public function blogPost()
+    // public function blogPost()
+    // {
+    //     return $this->belongsTo('App\Models\BlogPost');
+    // }
+
+    public function commentable()     // morph comments to either Users or BlogPosts etc - see each Model
     {
-        return $this->belongsTo('App\Models\BlogPost');
+        return $this->morphTo();
     }
 
     public function user()
@@ -45,8 +50,14 @@ class Comment extends Model
 
         // When creating a Comment 'forget' the cache for blog post comments and most commented
         static::creating(function (Comment $comment) {
-            Cache::tags(['blog-post'])->forget("blog-post-{$comment->blog_post_id}");
+            // dump($comment);
+            // dd(BlogPost::class);
+
+            if ($comment->commentable_type === BlogPost::class) {
+            // Cache::tags(['blog-post'])->forget("blog-post-{$comment->blog_post_id}");
+            Cache::tags(['blog-post'])->forget("blog-post-{$comment->commentable_id}");
             Cache::tags(['blog-post'])->forget('mostCommented');
+            }
         });
     }
 
