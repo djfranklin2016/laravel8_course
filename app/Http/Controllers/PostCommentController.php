@@ -19,14 +19,14 @@ class PostCommentController extends Controller
     public function store(BlogPost $post, StoreComment $request)
     {
         // Comment::create()
-        $post->comments()->create([
+        $comment = $post->comments()->create([
             'content' => $request->input('content'),
             'user_id' => $request->user()->id
         ]);
 
-        // Mail::to($post->user)->send(
-        //     new CommentPosted($comment)
-        // );
+        Mail::to($post->user)->send(
+            new CommentPosted($comment)
+        );
 
         // $request->session()->flash('status', 'Comment added');
         // return redirect()->back();
