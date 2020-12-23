@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Scopes\DeletedAdminScope;
 use App\Scopes\LatestScope;
+use App\Traits\Taggable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -14,7 +15,7 @@ class BlogPost extends Model
 {
     use HasFactory;
 
-    use SoftDeletes;        // when adding SoftDeletes to table structure
+    use SoftDeletes, Taggable;        // when adding SoftDeletes to table structure
 
 
     // protected $guarded=[];
@@ -37,10 +38,15 @@ class BlogPost extends Model
         return $this->belongsTo('App\Models\User');
     }
 
-    public function tags()
-    {
-        return $this->belongsToMany('App\Models\Tag')->withTimestamps();  // Many-to-Many relationshp definition
-    }
+    // public function tags()   // replaced ith Many-Many Polymorphic relationship - see below
+    // {
+    //     return $this->belongsToMany('App\Models\Tag')->withTimestamps();  // Many-to-Many relationshp definition
+    // }
+
+    // public function tags()      // Many-to-Many polymorphic relationshp definition for BlogPosts -> Tags
+    // {
+    //     return $this->morphToMany('App\Models\Tag', 'taggable')->withTimestamps();
+    // }        MOVED to Taggable trait - see "use" above and also App\Traits\Taggable
 
     // public function image()      // replace by Imageable - see below
     // {

@@ -3,9 +3,11 @@
 namespace App\Models;
 
 use App\Scopes\LatestScope;
+use App\Traits\Taggable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;   // when adding SoftDeletes to table structure
 use Illuminate\Support\Facades\Cache;
 
@@ -13,7 +15,7 @@ class Comment extends Model
 {
     use HasFactory;
 
-    use SoftDeletes;        // when adding SoftDeletes to table structure
+    use SoftDeletes, Taggable;        // when adding SoftDeletes to table structure
 
     // NB Make function name = DB table field name ie blogPost => blog_post
     // Laravel deaults to 'id' on indexes so thus will look for blog_post_id
@@ -36,6 +38,11 @@ class Comment extends Model
     {
         return $this->belongsTo('App\Models\User');
     }
+
+    // public function tags()      // Many-to-Many polymorphic relationshp definition for Comments -> Tags
+    // {
+    //     return $this->morphToMany('App\Models\Tag', 'taggable')->withTimestamps();
+    // }    MOVED to Traits\Taggable - see "use" statement above
 
     public function scopeLatest(Builder $query)
     {

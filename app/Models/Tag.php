@@ -11,7 +11,12 @@ class Tag extends Model
 
     public function blogPosts()
     {
-        return $this->belongsToMany('App\Models\BlogPost')->withTimestamps();    // Many-to-Many relationshp definition
+        // return $this->belongsToMany('App\Models\BlogPost')->withTimestamps();    // Many-to-Many relationshp definition
+        return $this->morphedByMany('App\Models\BlogPost', 'taggable')->withTimestamps()->as('tagged');    // Many-to-Many polymorphic relationshp definition
     }
-    
+
+    public function comments()
+    {
+        return $this->morphedByMany('App\Models\Comment', 'taggable')->withTimestamps()->as('tagged');
+    }
 }

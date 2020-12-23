@@ -58,7 +58,6 @@
         </x-tags> --}}
         
         <x-tags :tags="$post->tags">
-
         </x-tags>
 
         <p>Currently being read by {{ $counter }} people.</p>
