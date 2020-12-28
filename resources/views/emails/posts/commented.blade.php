@@ -14,7 +14,8 @@
 <hr>
 
 <p>
-    <a href="{{ route('users.show', ['user' => $comment->commentable->id]) }}">{{ $comment->user->name }}</a> said:
+    <img src="{{ $message->embed($comment->user->image->url()) }}" />
+    <a href="{{ route('users.show', ['user' => $comment->user->id]) }}">{{ $comment->user->name }}</a> said:
 </p>
 
 <p>

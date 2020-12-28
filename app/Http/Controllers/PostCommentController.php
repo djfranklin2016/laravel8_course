@@ -7,6 +7,7 @@ use App\Mail\CommentPosted;
 use App\Models\BlogPost;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
+use App\Mail\CommentPostedMarkdown;
 
 class PostCommentController extends Controller
 {
@@ -24,8 +25,20 @@ class PostCommentController extends Controller
             'user_id' => $request->user()->id
         ]);
 
-        Mail::to($post->user)->send(
-            new CommentPosted($comment)
+        // Mail::to($post->user)->send(                 // send NOW
+        //     // new CommentPosted($comment)
+        //     new CommentPostedMarkdown($comment)
+        // );
+
+        // Mail::to($post->user)->queue(                   // place into Queue and send asap
+        //     new CommentPostedMarkdown($comment)
+        // );
+
+        $when = now()->addMinutes(1);
+
+        Mail::to($post->user)->later(                       // place into Queue and send after Delay (When) has been met
+            $when,
+            new CommentPostedMarkdown($comment)
         );
 
         // $request->session()->flash('status', 'Comment added');
