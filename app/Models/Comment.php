@@ -49,23 +49,26 @@ class Comment extends Model
         return $query->orderBy(static::CREATED_AT, 'desc');
     }
 
-    public static function boot()
-    {
-        parent::boot();
+    // public static function boot()
+    // {
+    //     parent::boot();
 
-        // static::addGlobalScope(new LatestScope);     // disable Global Scope - use LOCAL Scope above
+    //     // static::addGlobalScope(new LatestScope);     // disable Global Scope - use LOCAL Scope above
 
-        // When creating a Comment 'forget' the cache for blog post comments and most commented
-        static::creating(function (Comment $comment) {
-            // dump($comment);
-            // dd(BlogPost::class);
+    //     // When creating a Comment 'forget' the cache for blog post comments and most commented
 
-            if ($comment->commentable_type === BlogPost::class) {
-            // Cache::tags(['blog-post'])->forget("blog-post-{$comment->blog_post_id}");
-            Cache::tags(['blog-post'])->forget("blog-post-{$comment->commentable_id}");
-            Cache::tags(['blog-post'])->forget('mostCommented');
-            }
-        });
-    }
+    //     // MOVED TO COMMENT OBSERVER
+    //     // static::creating(function (Comment $comment) {
+    //     //     // dump($comment);
+    //     //     // dd(BlogPost::class);
+
+    //     //     if ($comment->commentable_type === BlogPost::class) {
+    //     //     // Cache::tags(['blog-post'])->forget("blog-post-{$comment->blog_post_id}");
+    //     //     Cache::tags(['blog-post'])->forget("blog-post-{$comment->commentable_id}");
+    //     //     Cache::tags(['blog-post'])->forget('mostCommented');
+    //     //     }
+    //     // });
+
+    // }
 
 }

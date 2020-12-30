@@ -91,19 +91,21 @@ class BlogPost extends Model
 
         // static::addGlobalScope(new LatestScope);     // changed to Local Scope - see above
 
-        static::deleting(function (BlogPost $blogPost) {
-            $blogPost->comments()->delete();
-            Cache::tags(['blog-post'])->forget("blog-post-{$blogPost->id}");
-        });
+        // ALL BELOW MOVED TO BLOGPOST OBSERVER
+        
+        // static::deleting(function (BlogPost $blogPost) {
+        //     $blogPost->comments()->delete();
+        //     Cache::tags(['blog-post'])->forget("blog-post-{$blogPost->id}");
+        // });
         // ABOVE works in tune with SoftDeletes to SoftDelete comments
 
-        static::updating(function (BlogPost $blogPost) {
-            Cache::tags(['blog-post'])->forget("blog-post-{$blogPost->id}");
-        });
+        // static::updating(function (BlogPost $blogPost) {
+        //     Cache::tags(['blog-post'])->forget("blog-post-{$blogPost->id}");
+        // });
 
-        static::restoring(function (BlogPost $blogPost) {
-            $blogPost->comments()->restore();
-        });
+        // static::restoring(function (BlogPost $blogPost) {
+        //     $blogPost->comments()->restore();
+        // });
         // ABOVE works in tune with SoftDeletes to Restore comments when Blog Restored
 
     }

@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use App\Models\BlogPost;
 
 class User extends Authenticatable
 {
@@ -86,4 +87,17 @@ class User extends Authenticatable
     // {
     //     return $this->belongsTo('App\Models\BlogPost');
     // }
+    
+    public function scopeThatHasCommentedOnPost(Builder $query, BlogPost $post)
+    {
+        return $query->whereHas('comments', function($query) use($post) {
+            return $query->where('commentable_id', '=', $post->id)
+                ->where('commentable_type', '=', BlogPost::class);
+        });
+    }
+
+    public function scopeThatIsAnAdmin(Builder $query)
+    {
+        return $query->where('is_admin', true);
+    }
 }
