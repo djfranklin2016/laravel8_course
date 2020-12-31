@@ -13,7 +13,7 @@
             <x-errors></x-errors>
             
             <div>
-                <input class="btn btn-primary btn-block" type="submit" value="Add Comment">
+                <input class="btn btn-primary btn-block" type="submit" value="@lang('Add Comment')">
             </div>
         </form>
         {{-- <x-errors></x-errors> --}}

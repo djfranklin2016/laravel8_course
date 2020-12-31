@@ -4,8 +4,8 @@
 
 @section('content')
 
-    <h1>Master Laravel 8 Course</h1>
-    <h3>Contact Page</h3>
+    <h1>@lang('Master Laravel 8 Course')</h1>
+    <h3>@lang('Contact Page')</h3>
 
     @can('home.secret')
         <p>

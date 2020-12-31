@@ -14,7 +14,7 @@
                 <img src="{{ $user->image ? $user->image->url() : '' }}" class="img-thumbnail avatar" />
                 <div class="card mt-4">
                     <div class="card-body">
-                        <h6>Upload a different Photo</h6>
+                        <h6>@lang('Upload a different Photo')</h6>
                         <input class="form-control-file" type="file" name="avatar" />
                     </div>
                 </div>
@@ -22,14 +22,25 @@
 
             <div class="col-8">
                 <div class="form-group">
-                    <label>Name</label>
+                    <label>@lang('Name')</label>
                     <input class="form-control-file" type="text" value="" name="name">
+                </div>
+
+                <div class="form-group">
+                    <label>@lang('Language')</label>
+                    <select class="form-control" name="locale">
+                        @foreach(App\Models\User::LOCALES as $locale => $label)
+                            <option value="{{ $locale }}" {{ $user->locale !== $locale ?: 'selected'  }}>
+                                {{ $label }}
+                            </option>
+                        @endforeach
+                    </select>
                 </div>
 
                 <x-errors></x-errors>
 
                 <div class="form-group">
-                    <input class="btn btn-primary" type="submit" value="Save Changes">
+                    <input class="btn btn-primary" type="submit" value="@lang('Save Changes')">
                 </div>
             </div>
         </div>

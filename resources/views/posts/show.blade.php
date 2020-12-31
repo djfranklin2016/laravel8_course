@@ -60,7 +60,9 @@
         <x-tags :tags="$post->tags">
         </x-tags>
 
-        <p>Currently being read by {{ $counter }} people.</p>
+        {{-- <p>Currently being read by {{ $counter }} people.</p> --}}
+
+        @lang(trans_choice('messages.people.reading', $counter))
         <hr>
 
         {{-- <p>Logged In User: {{ Auth::user()->name }} - Id {{ Auth::user()->id}} </p> --}}

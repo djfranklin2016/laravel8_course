@@ -1,5 +1,5 @@
 <div class="form-group">
-    <label for="title">Post Title</label>
+    <label for="title">@lang('Post Title')</label>
     <input id="title" class="form-control" type="text" name="title" value="{{ old('title', optional($post ?? null)->title) }}">
 </div>
 {{-- @error('title')
@@ -7,7 +7,7 @@
 @enderror --}}
 
 <div class="form-group">
-    <label for="content">Post Content</label>
+    <label for="content">@lang('Post Content')</label>
     <textarea class="form-control" id="content" name="content">{{ old('content', optional($post ?? null)->content) }}</textarea>
 </div>
 
@@ -26,7 +26,7 @@
 @enderrors --}}
 
 <div class="form-group">
-    <label for="thumbnail">Thumbnail</label>
+    <label for="thumbnail">@lang('Thumbnail')</label>
     <input type="file" name="thumbnail" class="form-control-file" id="thumbnail">
 </div>
 

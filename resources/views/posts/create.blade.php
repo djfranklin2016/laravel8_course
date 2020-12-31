@@ -41,7 +41,7 @@
     <p>User Name = {{ Auth::user()->name }} (Id = {{ Auth::user()->id }})</p>
 
     <div>
-        <input class="btn btn-primary btn-block" type="submit" value="Create Post">
+        <input class="btn btn-primary btn-block" type="submit" value="@lang('Create Post')">
     </div>
 </form>
 

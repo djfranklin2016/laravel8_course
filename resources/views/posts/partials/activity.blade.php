@@ -20,7 +20,7 @@
 
         <x-card title="Most Commented Posts">
             @slot('subtitle')
-                What people are talking about ...
+                @lang('What people are talking about ...')
             @endslot
             @slot('items')
                 @foreach ($mostCommented as $post)  
@@ -53,7 +53,7 @@
 
         <x-card title="Most Active Members">
             @slot('subtitle')
-                Members with the most Posts written ...
+                @lang('Members with the most Posts written ...')'
             @endslot
             @slot('items', collect($mostActive)->pluck('name'))
         </x-card>
@@ -78,7 +78,7 @@
 
         <x-card title="Most Active Last Month">
             @slot('subtitle')
-                Most active members last month ...
+                @lang('Most active members last month ...')
             @endslot
             @slot('items', collect($mostActiveLastMonth)->pluck('name'))
         </x-card>

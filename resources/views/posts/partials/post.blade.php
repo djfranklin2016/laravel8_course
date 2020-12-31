@@ -35,11 +35,14 @@
 
 </x-tags>
 
-@if($post->comments_count)
+{{-- @if($post->comments_count)
     <p class="text-muted">{{ $post->comments_count }} comments</p>
 @else
     <p class="text-muted">No Comments Yet! ok</p>
-@endif
+@endif --}}
+
+@lang(trans_choice('messages.comments', $post->comments_count))
+
 
 <div class="mb-3">
     @auth
